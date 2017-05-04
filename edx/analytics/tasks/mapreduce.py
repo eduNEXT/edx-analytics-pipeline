@@ -276,6 +276,13 @@ class MultiOutputMapReduceJobTask(MapReduceJobTask):
         if output_path:
             log.info('Writing output file: %s', output_path)
             output_file_target = get_target_from_url(output_path)
+
+            # Workound for th `mv` problem
+            # mv: `/edx-analytics-pipeline/warehouse/course_enrollment_events/dt=2017-04-01/course_enrollment_events_2017-04-01': File exists
+
+            if output_file_target.exists():
+                output_file_target.remove()
+
             with output_file_target.open('w') as output_file:
                 self.multi_output_reducer(key, values, output_file)
 
