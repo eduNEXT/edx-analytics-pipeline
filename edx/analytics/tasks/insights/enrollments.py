@@ -407,12 +407,12 @@ class DaysEnrolledForEvents(object):
         if self.first_event.event_type == DEACTIVATED:
             # First event was an unenrollment event, assume the user was enrolled before that moment in time.
             self.increment_counter("Quality First Event Is Unenrollment")
-            log.warning('First event is an unenrollment for user %d in course %s on %s',
-                        self.user_id, self.course_id, self.first_event.datestamp)
+            log.warning('First event is an unenrollment for user %s in course %s on %s',
+                        str(self.user_id), self.course_id, self.first_event.datestamp)
         elif self.first_event.event_type == MODE_CHANGED:
             self.increment_counter("Quality First Event Is Mode Change")
-            log.warning('First event is a mode change for user %d in course %s on %s',
-                        self.user_id, self.course_id, self.first_event.datestamp)
+            log.warning('First event is a mode change for user %s in course %s on %s',
+                        str(self.user_id), self.course_id, self.first_event.datestamp)
 
         # Before we start processing events, we can assume that their current state is the same as it has been for all
         # time before the first event.
@@ -496,8 +496,8 @@ class DaysEnrolledForEvents(object):
                 self.increment_counter("Subset Mode Change")
         else:
             log.warning(
-                'No state change for %s event. User %d is already in the requested state for course %s on %s.',
-                self.event.event_type, self.user_id, self.course_id, self.event.datestamp
+                'No state change for %s event. User %s is already in the requested state for course %s on %s.',
+                self.event.event_type, str(self.user_id), self.course_id, self.event.datestamp
             )
             self.increment_counter("Subset Unchanged")
             self.increment_counter("Subset Unchanged Already {}".format("Enrolled" if self.state == ENROLLED else "Unenrolled"))
